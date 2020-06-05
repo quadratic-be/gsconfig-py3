@@ -806,7 +806,7 @@ class Catalog:
             path_parts = "layergroups/{}.xml".format(name)
             if workspace is not None:
                 wks_name = _name(workspace)
-                path_parts = "workspaces/{}".format(wks_name) + path_parts
+                path_parts = "workspaces/{}/{}".format(wks_name, path_parts)
             group_url = urljoin(
                 self.service_url,
                 path_parts
