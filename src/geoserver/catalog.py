@@ -81,8 +81,7 @@ class Catalog:
         """
         :return: About informations of the geoserver as a formatted html.
         """
-        about_url = urljoin(self.service_url,
-                                         "about/version.xml")
+        about_url = urljoin(self.service_url, "about/version.xml")
         r = self.session.get(about_url)
         if r.status_code == requests.codes.ok:
             return r.text
@@ -208,7 +207,7 @@ class Catalog:
         self._cache.clear()
         if 400 <= r.status_code < 600:
             raise FailedRequestError(
-                "Error code ({}) from GeoServer: {}"\
+                "Error code ({}) from GeoServer: {}"
                 .format(r.status_code, r.text)
             )
         return r
@@ -394,7 +393,7 @@ class Catalog:
             "Content-type": "application/zip",
             "Accept": "application/xml"
         }
-        if isinstance(data,dict):
+        if isinstance(data, dict):
             LOGGER.debug('Data is NOT a zipfile')
             archive = prepare_upload_bundle(name, data)
         else:
@@ -461,7 +460,7 @@ class Catalog:
                              overwrite=False):
         self._create_coveragestore(name, data, workspace, overwrite)
 
-    def create_coveragestore_external_geotiff(self, name, data,workspace=None,
+    def create_coveragestore_external_geotiff(self, name, data, workspace=None,
                                               overwrite=False):
         self._create_coveragestore(name, data, workspace=workspace,
                                    overwrite=overwrite, external=True)
@@ -470,7 +469,7 @@ class Catalog:
                               overwrite=False, external=False):
         if not overwrite:
             try:
-                store = self.get_store(name, workspace)
+                _ = self.get_store(name, workspace)
                 msg = "There is already a store named " + name
                 if workspace:
                     msg += " in " + str(workspace)
@@ -699,11 +698,11 @@ class Catalog:
             "Accept": "application/xml"
         }
         resource_url = store.resource_url
+        params = dict()
         if jdbc_virtual_table is not None:
             feature_type.metadata = ({
                 'JDBC_VIRTUAL_TABLE': jdbc_virtual_table
             })
-            params = dict()
             resource_url = urljoin(
                 self.service_url,
                 "workspaces/{}/datastores/{}/featuretypes.json".format(
@@ -894,8 +893,7 @@ class Catalog:
             raise ConflictingDataError(msg)
         if not overwrite or style is None:
             headers = {
-                "Content-type": "application/xml",
-                "Accept": "application/xml"
+                "Content-type": "text/xml",
             }
             xml = "<style><name>{0}</name><filename>{0}.sld"\
                   + "</filename></style>"
@@ -903,7 +901,7 @@ class Catalog:
             style = Style(self, name, workspace, style_format)
             r = self.session.post(style.create_href, data=xml, headers=headers)
             if r.status_code < 200 or r.status_code > 299:
-                raise UploadError(r.text)
+                raise UploadError(r.text+" "+str(r.status_code))
         headers = {
             "Content-type": style.content_type,
             "Accept": "application/xml"

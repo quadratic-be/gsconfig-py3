@@ -16,6 +16,7 @@ class _Attribution:
         self.url = url
         self.logo_type = logo_type
 
+
 def _read_attribution(node):
     title = node.find("title")
     width = node.find("logoWidth")
@@ -151,7 +152,9 @@ class Layer(ResourceInfo):
             return self.dirty['default_style']
         if self.dom is None:
             self.fetch()
-        element = self.dom.find("defaultStyle")
+        element = None
+        if self.dom:
+            element = self.dom.find("defaultStyle")
         # aborted data uploads can result in no default style
         return self._resolve_style(element) if element is not None else None
 
@@ -167,7 +170,10 @@ class Layer(ResourceInfo):
             return self.dirty["alternate_styles"]
         if self.dom is None:
             self.fetch()
-        styles_list = self.dom.findall("styles/style")
+        if self.dom:
+            styles_list = self.dom.findall("styles/style")
+        else:
+            styles_list = []
         return filter(None, [self._resolve_style(s) for s in styles_list])
 
     @styles.setter
@@ -201,20 +207,20 @@ class Layer(ResourceInfo):
                               default=True)
 
     def _get_attr_attribution(self):
-        return { 'title': self.attribution_object.title,
-                 'width': self.attribution_object.width,
-                 'height': self.attribution_object.height,
-                 'href': self.attribution_object.href,
-                 'url': self.attribution_object.url,
-                 'type': self.attribution_object.logo_type }
+        return {'title': self.attribution_object.title,
+                'width': self.attribution_object.width,
+                'height': self.attribution_object.height,
+                'href': self.attribution_object.href,
+                'url': self.attribution_object.url,
+                'type': self.attribution_object.logo_type}
 
     def _set_attr_attribution(self, attribution):
-        self.dirty["attribution"] = _Attribution( attribution['title'],
-                                                  attribution['width'],
-                                                  attribution['height'],
-                                                  attribution['href'],
-                                                  attribution['url'],
-                                                  attribution['type'] )
+        self.dirty["attribution"] = _Attribution(attribution['title'],
+                                                 attribution['width'],
+                                                 attribution['height'],
+                                                 attribution['href'],
+                                                 attribution['url'],
+                                                 attribution['type'])
 
         assert self.attribution_object.title == attribution['title']
         assert self.attribution_object.width == attribution['width']

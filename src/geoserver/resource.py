@@ -82,7 +82,7 @@ class _ResourceBase(ResourceInfo):
             parts = href.split('/')
             self._workspace_name = parts[parts.index('workspaces') + 1]
             self._store_name = parts[parts.index(self.url_part_stores) + 1]
-            name = parts[-1].replace('.xml','')
+            name = parts[-1].replace('.xml', '')
         self._href = href
         self.catalog = catalog
         self._workspace = workspace
