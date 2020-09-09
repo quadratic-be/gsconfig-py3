@@ -7,7 +7,7 @@ the GeoServer RESTConfig API.
 The project is distributed under a MIT License .
 """
 
-
+import sys
 import logging
 from tempfile import mkstemp
 from zipfile import ZipFile
@@ -27,7 +27,7 @@ FORCE_DECLARED = "FORCE_DECLARED"
 FORCE_NATIVE = "FORCE_NATIVE"
 # The projection handling policy for layers that should use the projection
 # information from the underlying storage mechanism directly, and ignore the
-## projection setting.
+# projection setting.
 
 REPROJECT = "REPROJECT"
 # The projection handling policy for layers that should use the projection
@@ -42,7 +42,11 @@ class ResourceInfo:
         self.dirty = dict()
 
     def fetch(self):
-        self.dom = self.catalog.get_xml(self.href)
+        try:
+            self.dom = self.catalog.get_xml(self.href)
+        except Exception as e:
+            print(f"{e}", file=sys.stderr)
+
 
     def clear(self):
         self.dirty = dict()

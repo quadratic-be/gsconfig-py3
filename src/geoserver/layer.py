@@ -151,7 +151,9 @@ class Layer(ResourceInfo):
             return self.dirty['default_style']
         if self.dom is None:
             self.fetch()
-        element = self.dom.find("defaultStyle")
+        element = None
+        if self.dom:
+            element = self.dom.find("defaultStyle")
         # aborted data uploads can result in no default style
         return self._resolve_style(element) if element is not None else None
 
@@ -167,7 +169,10 @@ class Layer(ResourceInfo):
             return self.dirty["alternate_styles"]
         if self.dom is None:
             self.fetch()
-        styles_list = self.dom.findall("styles/style")
+        if self.dom:
+            styles_list = self.dom.findall("styles/style")
+        else:
+            styles_list = []
         return filter(None, [self._resolve_style(s) for s in styles_list])
 
     @styles.setter
