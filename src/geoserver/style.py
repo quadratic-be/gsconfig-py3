@@ -70,14 +70,16 @@ class Style(ResourceInfo):
 
     @property
     def sld_title(self):
-        user_style = self._get_sld_dom().find("{http://www.opengis.net/sld}NamedLayer/{http://www.opengis.net/sld}UserStyle")
+        user_style = self._get_sld_dom().find("{http://www.opengis.net/sld}NamedLayer"
+                                              "/{http://www.opengis.net/sld}UserStyle")
         if not user_style:
-            user_style = self._get_sld_dom().find("{http://www.opengis.net/sld}UserLayer/{http://www.opengis.net/sld}UserStyle")
+            user_style = self._get_sld_dom().find("{http://www.opengis.net/sld}UserLayer"
+                                                  "/{http://www.opengis.net/sld}UserStyle")
         if user_style:
             try:
                 # it is not mandatory
                 title_node = user_style.find("{http://www.opengis.net/sld}Title")
-            except:
+            except Exception:
                 title_node = None
         if title_node is not None:
             title_node = title_node.text
@@ -85,14 +87,16 @@ class Style(ResourceInfo):
 
     @property
     def sld_name(self):
-        user_style = self._get_sld_dom().find("{http://www.opengis.net/sld}NamedLayer/{http://www.opengis.net/sld}UserStyle")
+        user_style = self._get_sld_dom().find("{http://www.opengis.net/sld}NamedLayer/"
+                                              "{http://www.opengis.net/sld}UserStyle")
         if not user_style:
-            user_style = self._get_sld_dom().find("{http://www.opengis.net/sld}UserLayer/{http://www.opengis.net/sld}UserStyle")
+            user_style = self._get_sld_dom().find("{http://www.opengis.net/sld}UserLayer/"
+                                                  "{http://www.opengis.net/sld}UserStyle")
         if user_style:
             try:
                 # it is not mandatory
                 name_node = user_style.find("{http://www.opengis.net/sld}Name")
-            except:
+            except Exception:
                 name_node = None
         if name_node is not None:
             name_node = name_node.text

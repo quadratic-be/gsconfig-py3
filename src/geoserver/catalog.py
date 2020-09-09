@@ -81,8 +81,7 @@ class Catalog:
         """
         :return: About informations of the geoserver as a formatted html.
         """
-        about_url = urljoin(self.service_url,
-                                         "about/version.xml")
+        about_url = urljoin(self.service_url, "about/version.xml")
         r = self.session.get(about_url)
         if r.status_code == requests.codes.ok:
             return r.text
@@ -208,7 +207,7 @@ class Catalog:
         self._cache.clear()
         if 400 <= r.status_code < 600:
             raise FailedRequestError(
-                "Error code ({}) from GeoServer: {}"\
+                "Error code ({}) from GeoServer: {}"
                 .format(r.status_code, r.text)
             )
         return r
@@ -394,7 +393,7 @@ class Catalog:
             "Content-type": "application/zip",
             "Accept": "application/xml"
         }
-        if isinstance(data,dict):
+        if isinstance(data, dict):
             LOGGER.debug('Data is NOT a zipfile')
             archive = prepare_upload_bundle(name, data)
         else:
@@ -461,7 +460,7 @@ class Catalog:
                              overwrite=False):
         self._create_coveragestore(name, data, workspace, overwrite)
 
-    def create_coveragestore_external_geotiff(self, name, data,workspace=None,
+    def create_coveragestore_external_geotiff(self, name, data, workspace=None,
                                               overwrite=False):
         self._create_coveragestore(name, data, workspace=workspace,
                                    overwrite=overwrite, external=True)
@@ -470,7 +469,7 @@ class Catalog:
                               overwrite=False, external=False):
         if not overwrite:
             try:
-                store = self.get_store(name, workspace)
+                _ = self.get_store(name, workspace)
                 msg = "There is already a store named " + name
                 if workspace:
                     msg += " in " + str(workspace)

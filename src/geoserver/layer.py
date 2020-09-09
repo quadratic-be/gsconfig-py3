@@ -16,6 +16,7 @@ class _Attribution:
         self.url = url
         self.logo_type = logo_type
 
+
 def _read_attribution(node):
     title = node.find("title")
     width = node.find("logoWidth")
@@ -206,20 +207,20 @@ class Layer(ResourceInfo):
                               default=True)
 
     def _get_attr_attribution(self):
-        return { 'title': self.attribution_object.title,
-                 'width': self.attribution_object.width,
-                 'height': self.attribution_object.height,
-                 'href': self.attribution_object.href,
-                 'url': self.attribution_object.url,
-                 'type': self.attribution_object.logo_type }
+        return {'title': self.attribution_object.title,
+                'width': self.attribution_object.width,
+                'height': self.attribution_object.height,
+                'href': self.attribution_object.href,
+                'url': self.attribution_object.url,
+                'type': self.attribution_object.logo_type}
 
     def _set_attr_attribution(self, attribution):
-        self.dirty["attribution"] = _Attribution( attribution['title'],
-                                                  attribution['width'],
-                                                  attribution['height'],
-                                                  attribution['href'],
-                                                  attribution['url'],
-                                                  attribution['type'] )
+        self.dirty["attribution"] = _Attribution(attribution['title'],
+                                                 attribution['width'],
+                                                 attribution['height'],
+                                                 attribution['href'],
+                                                 attribution['url'],
+                                                 attribution['type'])
 
         assert self.attribution_object.title == attribution['title']
         assert self.attribution_object.width == attribution['width']

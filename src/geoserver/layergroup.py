@@ -1,6 +1,7 @@
 # coding: utf-8
 
 from urllib.parse import urljoin
+from urllib import url
 
 from geoserver.support import ResourceInfo, write_string, write_bbox, \
     xml_property, bbox
@@ -139,10 +140,10 @@ class UnsavedLayerGroup(LayerGroup):
         if bounds is None:
             bounds = ("-180", "180", "-90", "90", "EPSG:4326")
         self.dirty.update(
-            name=name, 
-            layers=layers, 
+            name=name,
+            layers=layers,
             styles=styles,
-            bounds=bounds, 
+            bounds=bounds,
             workspace=workspace,
             abstractTxt=abstract,
             title=title)

@@ -47,7 +47,6 @@ class ResourceInfo:
         except Exception as e:
             print(f"{e}", file=sys.stderr)
 
-
     def clear(self):
         self.dirty = dict()
 
@@ -112,7 +111,7 @@ class DimensionInfo:
         if set, get the value of resolution in milliseconds
         """
         if self.resolution is None or not isinstance(self.resolution, str):
-                return self.resolution
+            return self.resolution
         val, mult = self.resolution.split(' ')
         return int(float(val) * self._multlipier(mult) * 1000)
 
@@ -149,7 +148,6 @@ def xml_property(path, converter=lambda x: x.text, default=None):
                 return default
         except Exception as e:
             raise AttributeError(e)
-
 
     def setter(self, value):
         self.dirty[path] = value
@@ -263,30 +261,6 @@ def bbox_xml(builder, box):
         builder.start("crs", {"class": "projected"})
         builder.data(crs)
         builder.end("crs")
-
-
-def md_dynamic_default_values_info(name, node):
-    """
-    Extract metadata Dynamic Default Values from an xml node
-    """
-    configurations = node.find("configurations")
-    if configurations is not None:
-        configurations = []
-        for n in node.findall("configuration"):
-            dimension = n.find("dimension")
-            if dimension is not None:
-                dimension = dimension.text
-            policy = n.find("policy")
-            policy = policy.text if policy is not None else None
-            defaultValueExpression = n.find("defaultValueExpression")
-            if defaultValueExpression is not None:
-                defaultValueExpression = defaultValueExpression.text
-            configurations.append(DynamicDefaultValuesConfiguration(
-                dimension,
-                policy,
-                defaultValueExpression
-            ))
-    return DynamicDefaultValues(name, configurations)
 
 
 def md_dimension_info(name, node):
